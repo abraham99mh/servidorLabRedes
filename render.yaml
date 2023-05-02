@@ -1,0 +1,5 @@
+services:
+  - name: web
+    env:
+      FLASK_ENV: production
+    start_command: gunicorn app:app --workers=4 --bind 0.0.0.0:$PORT
