@@ -36,6 +36,21 @@ def guardar_humedad_suelo():
     db.collection('dashboard').document('data').update({'h_suelo': humedad_suelo})
     return jsonify({'mensaje': 'Humedad del suelo guardada correctamente.'})
 
+@app.route('/dashboard', methods=['GET'])
+def obtener_datos_dashboard():
+    dashboard = db.collection('dashboard').document('data').get()
+    if not dashboard.exists:
+        return jsonify({'mensaje': 'No se encontró la colección dashboard.'}), 404
+    else:
+        data = dashboard.to_dict()
+        return jsonify({
+            'temperatura': data['temperatura'],
+            'presion_atmosferica': data['presion'],
+            'humedad_relativa': data['h_relativa'],
+            'humedad_suelo': data['h_suelo']
+        })
+
+
 
 if __name__ == '__main__':
     app.run()
